@@ -1,32 +1,16 @@
 import PageClient from '@/components/PageClient'
-import { createClient } from '@/lib/supabase/server'
+import content from '@/lib/data/content.json'
 
-export const revalidate = 0
-
-export default async function Home() {
-  const supabase = await createClient()
-
-  const [
-    { data: education },
-    { data: projects },
-    { data: skills },
-    { data: contacts },
-    { data: aboutData },
-  ] = await Promise.all([
-    supabase.from('education').select('*').order('order_index'),
-    supabase.from('projects').select('*').order('order_index'),
-    supabase.from('skills').select('*').order('order_index'),
-    supabase.from('contacts').select('*').order('order_index'),
-    supabase.from('about_me').select('*').limit(1),
-  ])
+export default function Home() {
+  const { education, projects, skills, contacts, about } = content
 
   return (
     <PageClient
-      education={education || []}
-      projects={projects || []}
-      skills={skills || []}
-      contacts={contacts || []}
-      about={aboutData?.[0] || null}
+      education={education}
+      projects={projects}
+      skills={skills}
+      contacts={contacts}
+      about={about}
     />
   )
 }
